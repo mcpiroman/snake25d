@@ -1,6 +1,6 @@
-import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader';
-import { MTLLoader } from 'three/examples/jsm/loaders/MTLLoader';
 import { Object3D } from 'three';
+import { MTLLoader } from 'three/examples/jsm/loaders/MTLLoader';
+import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader';
 
 
 export interface Resources {
@@ -22,7 +22,7 @@ export async function loadResources(): Promise<Resources> {
     let bendVertUpModel: Object3D = null!
     let bendVertDownModel: Object3D = null!
     
-    let jobs: Promise<any>[] = []
+    let jobs: Promise<unknown>[] = []
     
     jobs.push(loadObjModel('apple').then(m => appleModel = m))
     jobs.push(loadObjModel('body').then(m => bodyModel = m))

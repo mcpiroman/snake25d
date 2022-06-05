@@ -1,8 +1,9 @@
 {
     "compilerOptions": {
-        "module": "es6",
-        "target": "ES5",
+        "module": "ES2022",
+        "target": "ES6",
         "moduleResolution": "node",
+        "allowSyntheticDefaultImports": true,
         "strict": true,
         "strictNullChecks": true,
         "noImplicitAny": false,
@@ -11,6 +12,6 @@
         "outDir": "js",
     },
     "include": [
-        "ts/**/*"
+        "src/**/*"
     ]
 }

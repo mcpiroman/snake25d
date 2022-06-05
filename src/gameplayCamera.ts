@@ -1,6 +1,5 @@
-import * as THREE from 'three';
-import Ola from 'ola'
-import { OrthographicCamera, Vector3, Vector2, Quaternion, Euler, Curve, DiscreteInterpolant, PerspectiveCamera, Camera, Vector4 } from "three";
+import Ola from 'ola';
+import { Camera, Euler, OrthographicCamera, PerspectiveCamera, Quaternion, Vector2, Vector3, Vector4 } from "three";
 import { Game } from './game';
 
 export abstract class GameplayCamera {
@@ -25,7 +24,7 @@ export class OrtoCamera extends GameplayCamera{
     
     private aminRotOrigin: Quaternion
     private aminRotTarget: Quaternion
-    private rotAnim: Ola = new Ola(0, 0)
+    private rotAnim = Ola(0, 0)
     
     constructor(game: Readonly<Game>, canvasParent: HTMLElement) {
         super(game, canvasParent)
@@ -44,7 +43,7 @@ export class OrtoCamera extends GameplayCamera{
         if(!this.aminRotTarget.equals(game.ortoViewOrientation)) {
             this.aminRotOrigin = this.camera.quaternion.clone()
             this.aminRotTarget = game.ortoViewOrientation.clone()
-            this.rotAnim = new Ola(0, 500)
+            this.rotAnim = Ola(0, 500)
             this.rotAnim.value = 1
             return 400
         } else {
@@ -53,7 +52,7 @@ export class OrtoCamera extends GameplayCamera{
     }
     
     update(dt: number): GameplayCamera {
-        Quaternion.slerp(this.aminRotOrigin, this.aminRotTarget, this.camera.quaternion, this.rotAnim.value)
+        this.camera.quaternion.slerpQuaternions(this.aminRotOrigin, this.aminRotTarget, this.rotAnim.value)
         let pos = new Vector3(0, 0, this.distanceFormCenter).applyQuaternion(this.camera.quaternion).add(this.center)
         this.camera.position.copy(pos)
         
@@ -84,8 +83,8 @@ export class FpsCamera extends GameplayCamera {
     private lastSneakOrientation: Quaternion
     private aminRotOrigin: Quaternion
     private aminRotTarget: Quaternion
-    private distanceFormHead: number = -0.08
-    private rotAnim: Ola = new Ola(0, 0)
+    private distanceFormHead = -0.08
+    private rotAnim = Ola(0, 0)
     
     constructor(game: Readonly<Game>, canvasParent: HTMLElement) {
         super(game, canvasParent)
@@ -102,7 +101,7 @@ export class FpsCamera extends GameplayCamera {
             this.lastSneakOrientation = game.snake.orientation
             this.aminRotOrigin = this.camera.quaternion.clone()
             this.aminRotTarget = this.calcCameraRotation(game.snake.orientation)
-            this.rotAnim = new Ola(0, 500)
+            this.rotAnim = Ola(0, 500)
             this.rotAnim.value = 1
             return 200
         } else {
@@ -116,7 +115,7 @@ export class FpsCamera extends GameplayCamera {
     }
     
     update(dt: number): GameplayCamera {
-        Quaternion.slerp(this.aminRotOrigin, this.aminRotTarget, this.camera.quaternion, this.rotAnim.value)
+        this.camera.quaternion.slerpQuaternions(this.aminRotOrigin, this.aminRotTarget, this.rotAnim.value)
         
         let cameraPos = this.sneakHeadPos.clone().addScalar(.5)
         cameraPos.add(new Vector3(0, 0, -0.5 - this.distanceFormHead).applyQuaternion(this.camera.quaternion))

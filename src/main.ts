@@ -1,12 +1,11 @@
-import { Game, GameState } from './game';
 import * as THREE from 'three';
-import {Math as Matht, PerspectiveCamera, Object3D, Group, CameraHelper, Color} from 'three';
-import { Scene, BoxGeometry, WebGLRenderer, MeshBasicMaterial, Mesh, Geometry, Line, Vector3, LineBasicMaterial, Vector2, Quaternion, Euler, Clock } from 'three';
+import { Clock, Color, Line, LineBasicMaterial, MathUtils, Quaternion, Scene, Shape, ShapeGeometry, Vector2, Vector3, WebGLRenderer } from 'three';
 import { OrbitControls } from 'three-orbitcontrols-ts';
-import { GameplayCamera, OrtoCamera, FpsCamera } from './gameplayCamera';
-import { loadResources, Resources } from './resources';
-import { SnakeView } from './snakeView'
+import { Game, GameState } from './game';
+import { FpsCamera, GameplayCamera, OrtoCamera } from './gameplayCamera';
+import { loadResources } from './resources';
 import { ScorePointView } from './scorePointView';
+import { SnakeView } from './snakeView';
 
 loadResources().then(resources => {
 	let game = new Game(new Vector3(13, 13, 13), false)
@@ -26,7 +25,7 @@ loadResources().then(resources => {
 	let useDebugCamera = false
 	let debugCamera = new THREE.PerspectiveCamera(90, window.innerWidth / window.innerHeight, 1, 1000)
 	debugCamera.position.set(2, 12, 20)
-	debugCamera.rotation.set(Matht.DEG2RAD * -20, Matht.DEG2RAD * -20, 0, 'YXZ')
+	debugCamera.rotation.set(MathUtils.DEG2RAD * -20, MathUtils.DEG2RAD * -20, 0, 'YXZ')
 	let debugCameraControls = new OrbitControls(debugCamera, renderer.domElement)
 	debugCameraControls.target = new Vector3(game.worldSize.x / 2, game.worldSize.y / 2, game.worldSize.z / 2)
 	debugCameraControls.minZoom = 0.5
@@ -37,11 +36,11 @@ loadResources().then(resources => {
 	let gridLineMat = new LineBasicMaterial({ color: 0xFFFFFF })
 
 	createGridCorridor(new Quaternion(),
-	new Vector2(game.worldSize.x, game.worldSize.y), game.worldSize.z, new Vector3(0, 0, 0))
-	createGridCorridor(new Quaternion().setFromAxisAngle(new Vector3(0, 1, 0), Matht.DEG2RAD * 90), 
-	new Vector2(game.worldSize.x, game.worldSize.y), game.worldSize.z, new Vector3(0, 0, game.worldSize.z))
-	createGridCorridor(new Quaternion().setFromAxisAngle(new Vector3(1, 0, 0), Matht.DEG2RAD * 90), 
-	new Vector2(game.worldSize.x, game.worldSize.y), game.worldSize.z, new Vector3(0, game.worldSize.y, 0))
+		new Vector2(game.worldSize.x, game.worldSize.y), game.worldSize.z, new Vector3(0, 0, 0))
+	createGridCorridor(new Quaternion().setFromAxisAngle(new Vector3(0, 1, 0), MathUtils.DEG2RAD * 90), 
+		new Vector2(game.worldSize.x, game.worldSize.y), game.worldSize.z, new Vector3(0, 0, game.worldSize.z))
+	createGridCorridor(new Quaternion().setFromAxisAngle(new Vector3(1, 0, 0), MathUtils.DEG2RAD * 90), 
+		new Vector2(game.worldSize.x, game.worldSize.y), game.worldSize.z, new Vector3(0, game.worldSize.y, 0))
 
 	function createGridCorridor(dir: Quaternion, size: Vector2, length: number, off: Vector3) {
 		for(let i = 0; i <= length; i++) {
@@ -49,15 +48,17 @@ loadResources().then(resources => {
 		}
 		
 		function createSquare(startPoint: Vector3) {
-			let geo = new Geometry()
-			geo.vertices.push(
-				new Vector3(0, 0, 0).applyQuaternion(dir).add(startPoint), 
-				new Vector3(size.x, 0, 0).applyQuaternion(dir).add(startPoint), 
-				new Vector3(size.x, size.y, 0).applyQuaternion(dir).add(startPoint), 
-				new Vector3(0, size.y, 0).applyQuaternion(dir).add(startPoint), 
-				new Vector3(0, 0, 0).applyQuaternion(dir).add(startPoint)
-			)
-			let line = new Line(geo, gridLineMat)
+			let shape = new Shape([
+				new Vector2(0, 0), 
+				new Vector2(size.x, 0),
+				new Vector2(size.x, size.y),
+				new Vector2(0, size.y)
+			])
+			let geo = new ShapeGeometry(shape)
+
+			let line = new Line(geo, gridLineMat);
+			line.position.copy(startPoint)
+			line.applyQuaternion(dir)
 			scene.add(line)
 		}
 	}
@@ -127,10 +128,10 @@ loadResources().then(resources => {
 	}
 	
 	document.body.addEventListener('keydown', function(ev: KeyboardEvent) {
-		let char = String.fromCharCode(ev.which)
-		if(char === 'T') {
+        let char = ev.key.toLowerCase()
+		if(char === 't') {
 			useDebugCamera = !useDebugCamera
-		} else if(char == 'P') {
+		} else if(char == 'p') {
 			isPaused = !isPaused
 		}
 		

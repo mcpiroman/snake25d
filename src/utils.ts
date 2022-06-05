@@ -1,4 +1,4 @@
-import { Vector3, Vector2, Math as Matht,Quaternion } from "three";
+import { Quaternion, Vector2, Vector3 } from "three";
 
 export function roundVector2(v: Vector2): Vector2 {
     return new Vector2(Math.round(v.x), Math.round(v.y))
@@ -22,11 +22,6 @@ export function quaternionToAxisAngle(q: Quaternion): {axis: Vector3, angle: num
     let y = q.y / Math.sqrt(1-q.w*q.w)
     let z = q.z / Math.sqrt(1-q.w*q.w)
     return {axis: new Vector3(x, y, z), angle }
-}
-
-export function printAxisAngle({axis, angle}: {axis: Vector3, angle: number}, name?: string) {
-    axis = roundVector3(axis)
-    console.log(`${name ? name + ': ' : ''}${axis.x} ${axis.y} ${axis.z} / ${Math.round(angle * Matht.RAD2DEG) % 360}`);
 }
 
 export function roundQuaternion(q: Quaternion) {

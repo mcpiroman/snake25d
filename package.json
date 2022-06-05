@@ -9,21 +9,21 @@
     "start": "webpack-dev-server --open --config webpack.dev.js"
   },
   "devDependencies": {
-    "@typescript-eslint/eslint-plugin": "^2.10.0",
-    "@typescript-eslint/parser": "^2.10.0",
-    "eslint": "^6.7.2",
-    "ts-loader": "^6.2.1",
-    "tslint": "^5.20.1",
-    "typescript": "^3.7.3",
-    "webpack": "^4.41.2",
-    "webpack-cli": "^3.3.10",
-    "webpack-dev-server": "^3.9.0",
-    "webpack-merge": "^4.2.2"
+    "@types/ola": "^1.2.0",
+    "@types/three": "^0.141.0",
+    "@typescript-eslint/eslint-plugin": "^5.27.0",
+    "@typescript-eslint/parser": "^5.27.0",
+    "eslint": "^8.17.0",
+    "ts-loader": "^9.3.0",
+    "typescript": "^4.7.3",
+    "webpack": "^5.73.0",
+    "webpack-cli": "^4.9.2",
+    "webpack-dev-server": "^4.9.1"
   },
   "dependencies": {
-    "ola": "^1.1.0",
-    "three": "^0.111.0",
+    "ola": "^1.2.1",
+    "three": "^0.141.0",
     "three-orbitcontrols-ts": "git+https://git@github.com/nicolaspanel/three-orbitcontrols-ts.git",
-    "ts-key-enum": "^3.0.1"
+    "ts-key-enum": "^3.0.11"
   }
 }

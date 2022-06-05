@@ -1,11 +1,10 @@
+import { Euler, MathUtils, Quaternion, Vector3 } from 'three';
 import { Key } from 'ts-key-enum';
-import {Math as Matht} from 'three';
-import { Vector3, Quaternion, Euler, Vector2 } from "three"
-import { roundVector3, roundVector2, toVector2, printAxisAngle, quaternionToAxisAngle, rotateQuaternion } from './utils';
+import { rotateQuaternion, roundVector3, toVector2 } from './utils';
 
 export class Game {
     worldSize: Vector3
-    canPassBorders: boolean = true
+    canPassBorders = true
     isFpsMode: boolean
     
     snake: Snake
@@ -14,7 +13,7 @@ export class Game {
     scorePointChanged: (newScorePoint: Vector3) => void = ()=>{}
     
     gameState: GameState = GameState.Playing
-    score: number = 0
+    score = 0
     
     constructor(worldSize: Vector3, isFpsMode: boolean) {
         this.worldSize = worldSize
@@ -68,33 +67,32 @@ export class Game {
         if(this.gameState != GameState.Playing)
             return false
         
-        let char = String.fromCharCode(ev.which)
-        
-        if(char == 'R') {
+        let char = ev.key.toLowerCase()
+        if(char == 'r') {
             this.isFpsMode = !this.isFpsMode
             return true
 		} else if(this.isFpsMode) {
-            if(ev.key === Key.ArrowUp || char === 'W') {
+            if(ev.key === Key.ArrowUp || char === 'w') {
                 this.changeSneakFpsHeading(0)
-            } else if(ev.key === Key.ArrowRight || char === 'D') {
+            } else if(ev.key === Key.ArrowRight || char === 'd') {
                 this.changeSneakFpsHeading(1)
-            } else if(ev.key === Key.ArrowDown || char === 'S') {
+            } else if(ev.key === Key.ArrowDown || char === 's') {
                 this.changeSneakFpsHeading(2)
-            } else if(ev.key === Key.ArrowLeft || char === 'A') {
+            } else if(ev.key === Key.ArrowLeft || char === 'a') {
                 this.changeSneakFpsHeading(3)
             }     
         } else {
-            if(ev.key === Key.ArrowUp || char === 'W') {
+            if(ev.key === Key.ArrowUp || char === 'w') {
                 this.setSnakeOrtoFlatHeading(0)
-            } else if(ev.key === Key.ArrowRight || char === 'D') {
+            } else if(ev.key === Key.ArrowRight || char === 'd') {
                 this.setSnakeOrtoFlatHeading(1)
-            } else if(ev.key === Key.ArrowDown || char === 'S') {
+            } else if(ev.key === Key.ArrowDown || char === 's') {
                 this.setSnakeOrtoFlatHeading(2)
-            } else if(ev.key === Key.ArrowLeft || char === 'A') {
+            } else if(ev.key === Key.ArrowLeft || char === 'a') {
                 this.setSnakeOrtoFlatHeading(3)
-            } else if(char === 'E') {
+            } else if(char === 'e') {
                 this.changeSnakeOrtoDepthHeading(true)
-            } else if(char === 'Q') {
+            } else if(char === 'q') {
                 this.changeSnakeOrtoDepthHeading(false)
             }
         }
@@ -103,8 +101,8 @@ export class Game {
     }
     
     private changeSnakeOrtoDepthHeading(forwardOrBackward: boolean) {
-        let snake2viewDiff = this.snake.orientation.clone().multiply(this.ortoViewOrientation.clone().inverse())
-        let snake2screenDiff = rotateQuaternion(this.snake.orientation.clone().inverse(), snake2viewDiff)
+        let snake2viewDiff = this.snake.orientation.clone().multiply(this.ortoViewOrientation.clone().invert())
+        let snake2screenDiff = rotateQuaternion(this.snake.orientation.clone().invert(), snake2viewDiff)
         
         let pitchDiff = new Quaternion().setFromEuler(new Euler(Math.PI / 2 * (forwardOrBackward ? 1 : -1), 0, 0))
         pitchDiff.x = -pitchDiff.x
@@ -130,7 +128,7 @@ export class Game {
     }
     
     projectVectorToView(v: Vector3): Vector3 {
-        let p = v.clone().applyQuaternion(this.ortoViewOrientation.clone().inverse())
+        let p = v.clone().applyQuaternion(this.ortoViewOrientation.clone().invert())
         return roundVector3(p)
     }
 }
@@ -178,9 +176,9 @@ export class Snake {
         let newHead = this.head.pos.clone().add(dir)
         
         if(this.game.canPassBorders) {
-            newHead.x = Matht.euclideanModulo(newHead.x, this.game.worldSize.x)
-            newHead.y = Matht.euclideanModulo(newHead.y, this.game.worldSize.y)
-            newHead.z = Matht.euclideanModulo(newHead.z, this.game.worldSize.z)
+            newHead.x = MathUtils.euclideanModulo(newHead.x, this.game.worldSize.x)
+            newHead.y = MathUtils.euclideanModulo(newHead.y, this.game.worldSize.y)
+            newHead.z = MathUtils.euclideanModulo(newHead.z, this.game.worldSize.z)
         }
         
         let movedTail = false

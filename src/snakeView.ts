@@ -1,8 +1,7 @@
-import * as THREE from 'three';
-import { Snake, Game } from './game';
+import { Object3D, Scene, Vector3 } from 'three';
+import { Game, Snake } from './game';
 import { Resources } from './resources';
-import { Scene, Object3D, Vector3, Euler, Quaternion, Vector2 } from 'three';
-import { roundVector3, rotateQuaternion, printAxisAngle, quaternionToAxisAngle, normalizeZerosInQuaternion } from './utils';
+import { normalizeZerosInQuaternion, rotateQuaternion, roundVector3 } from './utils';
 
 export class SnakeView {
     private snake: Snake
@@ -64,8 +63,8 @@ export class SnakeView {
             headRot = normalizeZerosInQuaternion(headRot)
             neckRot = normalizeZerosInQuaternion(neckRot)
             
-            let q1 = headRot.clone().multiply(neckRot.clone().inverse())
-            let q2 = rotateQuaternion(headRot.inverse(), q1)
+            let q1 = headRot.clone().multiply(neckRot.clone().invert())
+            let q2 = rotateQuaternion(headRot.invert(), q1)
             let neckToHeadDir = roundVector3(new Vector3(0, 1, 0).applyQuaternion(q2))
             
             if(neckToHeadDir.y != 0) {

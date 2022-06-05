@@ -1,8 +1,6 @@
-import * as THREE from 'three';
-import { Snake, Game } from './game';
+import { Euler, Object3D, Quaternion, Scene, Vector3 } from 'three';
+import { Game } from './game';
 import { Resources } from './resources';
-import { Scene, Object3D, Vector3, Euler, Quaternion, Vector2 } from 'three';
-import { roundVector3, rotateQuaternion, printAxisAngle, quaternionToAxisAngle, normalizeZerosInQuaternion } from './utils';
 
 export class ScorePointView {
     private scorePointObj: Object3D
