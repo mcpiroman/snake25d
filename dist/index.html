@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="author" content="https://github.com/mcpiroman">
+    <title>Snake 2.5D</title>
+    <style>
+        * { margin: 0; padding: 0; }
+        body { overflow: hidden; }
+        html, body { width: 100%; height: 100%;}
+        canvas { width: 100%; height: 100%; }
+        #game { width: 100%; height: calc(100% - 70px); }
+        #desc { 
+            width: 100%; 
+            height: 70px; 
+            background-color: #111; 
+            color: #ddd;
+            font-size: 20px;
+            font-family: 'Segoe UI', sans-serif;
+            padding: 0px 8px 2px 8px;
+        } open 
+        td { padding-right: 10px;}
+        table {padding-top: 0; width: 800px;}
+        thead {display: none;}
+    </style>
+</head>
+<body>
+    <div id="game"></div>
+    
+    <div id="desc">
+        <table>
+            <thead>
+                <tr></tr>
+                <tr></tr>
+                <tr></tr>
+            </thead>
+            <tr>
+                <td>
+                    Controls:
+                </td>
+                <td>
+                    Q - turn into the screen
+                </td>
+                <td>
+                    R - toggle 2.5D/3D view
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    WSAD or arrows
+                </td>
+                <td>
+                    E - turn outside the screen
+                </td>
+            </tr>
+        </table>
+    </div>
+    
+    <script src="bundle.js"></script>
+</body>
+</html>
