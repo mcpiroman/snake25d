@@ -9,7 +9,7 @@ import { SnakeView } from './snakeView';
 
 loadResources().then(resources => {
 	let game = new Game(new Vector3(13, 13, 13), false)
-	let logicUpdateInterval = 500
+	let logicUpdateInterval = 250
 	let isPaused = false
 
 	let canvasParent = document.getElementById('game')!
@@ -31,7 +31,7 @@ loadResources().then(resources => {
 	debugCameraControls.minZoom = 0.5
 	debugCameraControls.minZoom = 2
 
-	scene.add(new THREE.AmbientLight())
+	scene.add(new THREE.AmbientLight('white', 4))
 
 	let gridLineMat = new LineBasicMaterial({ color: 0xFFFFFF })
 
